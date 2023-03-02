@@ -5,6 +5,7 @@ let dbConnection;
 const connectToDb = (cb) => {
   MongoClient.connect("mongodb://localhost:27017/bookstore")
     .then((client) => {
+      console.log("connected to the db");
       dbConnection = client.db();
       return cb();
     })

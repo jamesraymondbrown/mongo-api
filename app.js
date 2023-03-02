@@ -11,12 +11,22 @@ connectToDb((err) => {
     app.listen(3000, () => {
       console.log("App listening on port 3000");
     });
-    db = getDb;
+    db = getDb();
   }
 });
 
 //  routes
-
 app.get("/books", (req, res) => {
-  res.json({ message: "welcome to the api" });
+  const books = [];
+
+  db.collection("books")
+    .find()
+    .sort({ author: 1 })
+    .forEach((book) => books.push(book))
+    .then(() => {
+      res.status(200).json(books);
+    })
+    .catch(() => {
+      res.status(500).json({ error: "Could not fetch the documents" });
+    });
 });
